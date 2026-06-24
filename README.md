@@ -25,9 +25,9 @@ Equipes financeiras frequentemente monitoram receita e despesa de forma separada
 O relatório é composto por uma única página com os seguintes visuais:
 
 | Visual | Descrição |
-|---|---|
+|--------|-----------|
 | **KPI — Total de Receitas** | Receita total acumulada no período (R$ 1,92 Mi) |
-| **KPI — Margem de Lucro** | Percentual de margem calculado via Power Query (39,96%) |
+| **KPI — Margem de Lucro** | Percentual de margem calculado via medida DAX (39,96%) |
 | **KPI — Total de Despesas** | Despesa total acumulada no período (R$ 1,15 Mi) |
 | **Principais Segmentos (Key Influencers)** | Visual de IA nativo do Power BI — segmenta automaticamente as transações por média de valor e tamanho de população |
 | **Total de Despesas por Componente** | Gráfico de linha/área com linha de referência na média (R$ 192 Mil) |
@@ -39,9 +39,34 @@ O relatório é composto por uma única página com os seguintes visuais:
 ## 🛠️ Stack técnica
 
 - **Ferramenta:** Power BI Desktop
-- **Transformação de dados (Power Query):** ajuste de tipos de dado, promoção de cabeçalhos, configuração da fonte e criação de coluna calculada para margem de lucro
+- **Transformação de dados (Power Query):** ajuste de tipos de dado, promoção de cabeçalhos e configuração da fonte
 - **Visualizações:** Key Influencers (visual de IA nativo do Power BI), matriz financeira com formatação condicional por tipo, gráfico de área com linha de referência e barras horizontais
-- **Sem medidas DAX** — todas as agregações e a margem de lucro foram calculadas via Power Query
+
+**Medidas DAX criadas:**
+
+As quatro medidas formam uma cadeia de dependência — as duas primeiras isolam receitas e despesas por tipo, e as duas seguintes calculam lucro e margem com base nelas:
+
+```dax
+TotalReceitas = CALCULATE(SUM(DadosFinanceiros[Valor]), DadosFinanceiros[Tipo] = "Receitas")
+```
+
+```dax
+TotalDespesas = CALCULATE(SUM(DadosFinanceiros[Valor]), DadosFinanceiros[Tipo] = "Despesas")
+```
+
+Filtram a coluna `Valor` pelo campo `Tipo`, separando os dois fluxos financeiros a partir de uma única tabela de dados.
+
+```dax
+Lucro = [TotalReceitas] - [TotalDespesas]
+```
+
+Calcula o resultado líquido do período com base nas duas medidas anteriores.
+
+```dax
+MargemLucro = DIVIDE([Lucro], [TotalReceitas], 0)
+```
+
+Expressa a margem como proporção da receita total. O uso de `DIVIDE` com terceiro argumento `0` garante que divisões por zero retornem zero em vez de erro — evitando quebra nos visuais em períodos sem receita.
 
 ---
 
