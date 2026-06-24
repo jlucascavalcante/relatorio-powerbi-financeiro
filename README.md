@@ -4,6 +4,8 @@ Dashboard financeiro com foco em receitas, despesas e margem de lucro — integr
 
 ---
 
+## 📸 Preview do Dashboard
+
 ![Preview do Dashboard](preview2.png)
 
 ## 🎯 Problema de negócio
