@@ -4,6 +4,8 @@ Dashboard financeiro com foco em receitas, despesas e margem de lucro — integr
 
 ---
 
+![Preview do Dashboard](preview2.png)
+
 ## 🎯 Problema de negócio
 
 Equipes financeiras frequentemente monitoram receita e despesa de forma separada, sem cruzar essas dimensões com os fatores que influenciam o valor das transações. Este dashboard centraliza os três indicadores-chave — total de receitas, total de despesas e margem de lucro — e adiciona uma camada analítica via IA para responder: quais segmentos de transação estão associados a valores mais baixos? Onde estão as maiores concentrações de despesa? E como receitas e despesas evoluíram ao longo dos anos?
